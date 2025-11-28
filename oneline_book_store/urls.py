@@ -23,8 +23,7 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/login/', permanent=False), name='root_redirect'),  # Redirect root to login
-    path('user/', include('user_app.urls')),  # Include user_app for login/register
+    path('', include('user_app.urls')),  # Include user_app for login/register at root
     path('books/', include('admin_app.urls')),  # Include admin_app for book management
     path('add_category/', admin_views.add_category, name='add_category_direct'),  # Direct access to add_category
 ]
