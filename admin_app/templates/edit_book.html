@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ <h1>Add Book</h1>
+
+<style>
+    .form-card {
+        max-width: 520px;
+        margin: 32px auto;
+        padding: 28px;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(30, 50, 100, 0.08);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        color: #16324f;
+        border: 1px solid rgba(20, 40, 70, 0.06);
+    }
+
+    .form-card h2 {
+        margin: 0 0 18px;
+        font-size: 20px;
+        letter-spacing: -0.2px;
+    }
+
+    form {
+        display: grid;
+        gap: 12px;
+    }
+
+    /* Django as_p renders <p> containing label and field; style them */
+    form p {
+        margin: 0;
+        display: grid;
+        gap: 6px;
+    }
+
+    form label {
+        font-size: 13px;
+        color: #2b536f;
+        font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="url"],
+    input[type="email"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(35, 75, 110, 0.12);
+        background: #fff;
+        transition: box-shadow 0.12s ease, transform 0.06s ease;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        box-shadow: 0 6px 20px rgba(27, 89, 138, 0.08);
+        transform: translateY(-1px);
+        border-color: #2b86c9;
+    }
+
+    .submit-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 6px;
+    }
+
+    .btn {
+        appearance: none;
+        -webkit-appearance: none;
+        background: linear-gradient(90deg,#2b86c9,#1f6fb3);
+        color: #fff;
+        border: none;
+        padding: 10px 16px;
+        font-weight: 700;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(43, 134, 201, 0.18);
+        transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.08s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); box-shadow: 0 6px 16px rgba(43, 134, 201, 0.14); }
+
+    .errorlist {
+        margin: 0 0 8px 0;
+        padding: 8px 12px;
+        background: rgba(255, 235, 237, 0.9);
+        color: #7a1218;
+        border-radius: 8px;
+        list-style: none;
+        font-size: 13px;
+    }
+
+    .helptext {
+        font-size: 12px;
+        color: #68899f;
+        margin-top: 4px;
+    }
+
+    @media (max-width: 560px) {
+        .form-card { margin: 18px; padding: 18px; }
+    }
+</style>
+
+<div class="form-card">
+    <h2>Edit Book</h2>
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="submit-row">
+            <button type="submit" class="btn">Save changes</button>
+        </div>
+    </form>
+</div></form>

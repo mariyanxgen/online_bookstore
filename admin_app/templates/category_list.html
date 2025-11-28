@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<h1>Category List</h1>
+   {% for i in cat %}
+<div style="display:flex; flex-wrap:wrap; gap:20px;">
+        <div style="border:1px solid #ccc; padding:10px; width:200px; border-radius:10px;">
+            <h3>{{ i.category_name }}</h3>
+             <h3>{{ i.cat_description }}</h3>
+</div>
+</div>
+   {% endfor %}

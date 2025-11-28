@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            color: #4a5568 !important;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        .navbar-nav .nav-link {
+            color: #4a5568 !important;
+            margin: 0 0.5rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #667eea !important;
+        }
+        .main-content {
+            padding: 3rem 0;
+        }
+        .welcome-section {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            position: relative;
+            padding: 4rem 0;
+        }
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="bookshelf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0.05)"/></linearGradient></defs><rect x="100" y="150" width="80" height="120" fill="%23e74c3c" rx="5"/><rect x="190" y="140" width="70" height="130" fill="%2334495e" rx="5"/><rect x="270" y="160" width="90" height="110" fill="%23f39c12" rx="5"/><rect x="370" y="145" width="85" height="125" fill="%232ecc71" rx="5"/><rect x="465" y="155" width="75" height="115" fill="%239b59b6" rx="5"/><rect x="550" y="150" width="80" height="120" fill="%231abc9c" rx="5"/><rect x="640" y="140" width="85" height="130" fill="%23e67e22" rx="5"/><rect x="735" y="160" width="75" height="110" fill="%233498db" rx="5"/><rect x="820" y="145" width="90" height="125" fill="%23e91e63" rx="5"/><rect x="920" y="150" width="80" height="120" fill="%234caf50" rx="5"/></svg>') center/cover no-repeat;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .welcome-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .dashboard-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="10" y="20" width="15" height="25" fill="rgba(102,126,234,0.1)" rx="2"/><rect x="30" y="15" width="12" height="30" fill="rgba(102,126,234,0.15)" rx="2"/><rect x="45" y="25" width="18" height="20" fill="rgba(102,126,234,0.1)" rx="2"/><rect x="70" y="18" width="14" height="27" fill="rgba(102,126,234,0.12)" rx="2"/></svg>') no-repeat center;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+        .dashboard-card:hover .card-icon::before {
+            opacity: 1;
+            animation: shine 0.6s ease-in-out;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+        }
+        .stat-title {
+            color: #2d3748;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .btn-view {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .btn-view:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #48cae4, #0096c7);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(72, 202, 228, 0.3);
+        }
+        .btn-add:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 202, 228, 0.4);
+        }
+        .add-book-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .add-book-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="30" fill="none" stroke="rgba(72,202,228,0.1)" stroke-width="2" stroke-dasharray="5,5"/><rect x="45" y="35" width="30" height="50" fill="rgba(72,202,228,0.1)" rx="3"/><path d="M50 45 L70 45 M50 55 L70 55 M50 65 L65 65" stroke="rgba(72,202,228,0.15)" stroke-width="2" stroke-linecap="round"/></svg>') no-repeat center;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .add-book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .add-book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #48cae4, #0096c7);
+        }
+        .add-book-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #48cae4, #0096c7);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(72, 202, 228, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .add-book-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+        .add-book-card:hover .add-book-icon::before {
+            opacity: 1;
+            animation: shine 0.6s ease-in-out;
+        }
+        .add-book-title {
+            color: #2d3748;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .add-book-subtitle {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .decorative-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        .book-shape {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            animation: bookFloat 8s ease-in-out infinite;
+        }
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        .book-shape:nth-child(4) {
+            top: 15%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+        .book-shape:nth-child(5) {
+            bottom: 25%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        .book-shape:nth-child(6) {
+            top: 70%;
+            left: 5%;
+            animation-delay: 5s;
+        }
+        @keyframes bookFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(2deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+            75% { transform: translateY(-20px) rotate(1deg); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative Background Shapes -->
+    <div class="decorative-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="book-shape"></div>
+        <div class="book-shape"></div>
+        <div class="book-shape"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-book-open me-2"></i>Book Admin Dashboard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'book_list' %}">
+                            <i class="fas fa-book me-1"></i>Books
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'category_list' %}">
+                            <i class="fas fa-tags me-1"></i>Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_book' %}">
+                            <i class="fas fa-plus me-1"></i>Add Book
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_category' %}">
+                            <i class="fas fa-folder-plus me-1"></i>Add Category
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-content" style="margin-top: 100px;">
+        <!-- Library Header Image -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; border-radius: 20px; padding: 4rem 2rem; text-align: center; margin-bottom: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+                    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 2rem; display: inline-block;">
+                        <h1 style="color: white; font-size: 3.5rem; font-weight: 700; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                            <i class="fas fa-university me-3"></i>Digital Library
+                        </h1>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 1.3rem; margin: 1rem 0 0 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                            Your gateway to knowledge management
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">
+                <i class="fas fa-crown me-3"></i>Admin Dashboard
+            </h1>
+            <p class="welcome-subtitle">Manage your bookstore with style and efficiency</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="row">
+            <!-- Featured Books Gallery -->
+            <div class="col-12 mb-4">
+                <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
+                    <h3 style="text-align: center; color: #2d3748; margin-bottom: 2rem; font-weight: 700;">
+                        <i class="fas fa-images me-2"></i>Current Book Collection
+                    </h3>
+                    <div class="row">
+                        {% for book in recent_books|slice:":3" %}
+                        <div class="col-md-4 mb-3">
+                            <div style="text-align: center;">
+                                {% if book.cover_image %}
+                                    <img src="{{ book.cover_image }}" alt="{{ book.title }}" style="width: 100%; height: 280px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                {% else %}
+                                    <div style="width: 100%; height: 280px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                {% endif %}
+                                <p style="margin-top: 0.5rem; font-weight: 600; color: #4a5568;">{{ book.title }}</p>
+                                <small style="color: #718096;">by {{ book.author }}</small>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center">
+                            <p style="color: #718096; font-size: 1.1rem;">No books available yet</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Books -->
+            <div class="col-md-4 mb-4">
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-title">Total Books</div>
+                    <div class="stat-number">{{ total_books }}</div>
+                    <!-- Mini book cover preview -->
+                    <div style="display: flex; justify-content: center; gap: 5px; margin: 1rem 0;">
+                        {% for book in recent_books|slice:":3" %}
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image }}" alt="{{ book.title }}" style="width: 30px; height: 40px; object-fit: cover; border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                            {% else %}
+                                <div style="width: 30px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'book_list' %}" class="btn-view">
+                        <i class="fas fa-eye me-2"></i>View Books
+                    </a>
+                </div>
+            </div>
+
+            <!-- Total Categories -->
+            <div class="col-md-4 mb-4">
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stat-title">Total Categories</div>
+                    <div class="stat-number">{{ total_categories }}</div>
+                    <!-- Category preview images -->
+                    <div style="display: flex; justify-content: center; gap: 8px; margin: 1rem 0;">
+                        <div style="text-align: center;">
+                            <img src="https://images.unsplash.com/photo-1519682577862-22b62bb24e93?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Fiction" style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                            <small style="display: block; font-size: 0.7rem; color: #718096;">Fiction</small>
+                        </div>
+                        <div style="text-align: center;">
+                            <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Science" style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                            <small style="display: block; font-size: 0.7rem; color: #718096;">Science</small>
+                        </div>
+                    </div>
+                    <a href="{% url 'category_list' %}" class="btn-view">
+                        <i class="fas fa-list me-2"></i>View Categories
+                    </a>
+                </div>
+            </div>
+
+            <!-- Add New Book -->
+            <div class="col-md-4 mb-4">
+                <div class="add-book-card">
+                    <div class="add-book-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="add-book-title">Add New Book</div>
+                    <div class="add-book-subtitle">Expand your library with new titles</div>
+                    <!-- Book creation preview -->
+                    <div style="margin: 1rem 0;">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Adding Books" style="width: 80px; height: 50px; object-fit: cover; border-radius: 8px; box-shadow: 0 3px 12px rgba(0,0,0,0.2);">
+                    </div>
+                    <a href="{% url 'add_book' %}" class="btn-add">
+                        <i class="fas fa-magic me-2"></i>Add Book
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Corner Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 3rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
+                    <h3 style="text-align: center; color: #2d3748; margin-bottom: 2rem; font-weight: 700;">
+                        <i class="fas fa-clock me-2"></i>Recently Added Books
+                    </h3>
+                    <div class="row">
+                        {% for book in recent_books %}
+                        <div class="col-md-4 mb-4">
+                            <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: 100%; text-align: center;">
+                                {% if book.cover_image %}
+                                    <img src="{{ book.cover_image }}" alt="{{ book.title }}" style="width: 120px; height: 180px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: 1rem;">
+                                {% else %}
+                                    <div style="width: 120px; height: 180px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; margin: 0 auto 1rem;">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                {% endif %}
+                                <h5 style="color: #2d3748; margin-bottom: 0.5rem;">{{ book.title }}</h5>
+                                <p style="color: #718096; margin-bottom: 0.5rem;">{{ book.author }}</p>
+                                {% if book.category.category_name == 'Fiction' %}
+                                    <span style="background: #667eea; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">{{ book.category.category_name }}</span>
+                                {% else %}
+                                    <span style="background: #48cae4; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">{{ book.category.category_name }}</span>
+                                {% endif %}
+                                <div style="margin-top: 1rem;">
+                                    <span style="font-weight: 600; color: #2ecc71; font-size: 1.1rem;">${{ book.price }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center">
+                            <p style="color: #718096; font-size: 1.1rem; padding: 2rem;">No books available yet</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Library Inspiration Section -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 3rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
+                    <h3 style="text-align: center; color: #2d3748; margin-bottom: 2rem; font-weight: 700;">
+                        <i class="fas fa-chair me-2"></i>Reading Corner Gallery
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div style="position: relative; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cozy Reading Nook" style="width: 100%; height: 250px; object-fit: cover;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 1.5rem; text-align: center;">
+                                    <h5 style="margin: 0; font-weight: 600;">Cozy Reading Nook</h5>
+                                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">Perfect atmosphere for book lovers</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div style="position: relative; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+                                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Library Workspace" style="width: 100%; height: 250px; object-fit: cover;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 1.5rem; text-align: center;">
+                                    <h5 style="margin: 0; font-weight: 600;">Modern Library Space</h5>
+                                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">Inspiring workspace for readers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <!-- Book-themed footer decoration -->
+            <div style="background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 100%22><rect x=%2220%22 y=%2240%22 width=%2220%22 height=%2240%22 fill=%22rgba(255,255,255,0.1)%22 rx=%222%22/><rect x=%2250%22 y=%2235%22 width=%2218%22 height=%2245%22 fill=%22rgba(255,255,255,0.08)%22 rx=%222%22/><rect x=%2275%22 y=%2245%22 width=%2225%22 height=%2235%22 fill=%22rgba(255,255,255,0.12)%22 rx=%222%22/><rect x=%22650%22 y=%2240%22 width=%2220%22 height=%2240%22 fill=%22rgba(255,255,255,0.1)%22 rx=%222%22/><rect x=%22680%22 y=%2235%22 width=%2218%22 height=%2245%22 fill=%22rgba(255,255,255,0.08)%22 rx=%222%22/><rect x=%22705%22 y=%2245%22 width=%2225%22 height=%2235%22 fill=%22rgba(255,255,255,0.12)%22 rx=%222%22/><circle cx=%22400%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.1)%22 stroke-width=%222%22 stroke-dasharray=%225,5%22/></svg>') center/cover no-repeat; padding: 2rem 0; border-radius: 15px; margin-bottom: 1rem; backdrop-filter: blur(5px);">
+                <i class="fas fa-heart text-danger me-2"></i>
+                © 2025 Book Management System | Crafted with love by Admin
+                <i class="fas fa-star text-warning ms-2"></i>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
+                <i class="fas fa-books me-2"></i>
+                "A room without books is like a body without a soul" - Cicero
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

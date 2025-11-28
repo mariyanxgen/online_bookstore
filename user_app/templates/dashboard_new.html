@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome {{ request.session.username }}</h1>
+    <p>Email: {{ request.session.email }}</p>
+
+    <!-- <p><strong>Session Username:</strong> {{ username }}</p>
+    <p><strong>Cookie Username:</strong> {{ cookie_user }}</p> -->
+</body>
+</html>

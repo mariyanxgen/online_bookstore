@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Bookstore - Your Literary Journey Starts Here</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-menu a:hover {
+            opacity: 0.8;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-outline {
+            border: 1px solid white;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23667eea" width="1200" height="800"/><g opacity="0.1"><circle fill="white" cx="200" cy="200" r="50"/><circle fill="white" cx="800" cy="300" r="30"/><circle fill="white" cx="1000" cy="500" r="40"/></g></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-search {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero-search input {
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            flex: 1;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        .hero-search button {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .hero-search button:hover {
+            background: #45a049;
+        }
+
+        /* Sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        /* Book Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #f39c12, #e74c3c);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .book-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .book-author {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+
+        .book-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #ffc107;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            flex: 1;
+            transition: all 0.3s;
+        }
+
+        .btn-cart {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-wishlist {
+            background: #f39c12;
+            color: white;
+        }
+
+        /* Categories */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">📚 BookStore</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="/books/book_list/">Books</a></li>
+                    <li><a href="/books/category_list/">Categories</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline">Dashboard</a>
+                    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Next Great Read</h1>
+            <p>Explore thousands of books from every genre imaginable</p>
+            <form action="/books/book_list/" method="get" class="hero-search">
+                <input type="text" name="query" placeholder="Search for books, authors, or genres...">
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Featured Books -->
+    {% if featured_books %}
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">✨ Featured Books</h2>
+            <p class="section-subtitle">Hand-picked selections from our curated collection</p>
+            <div class="books-grid">
+                {% for book in featured_books %}
+                <div class="book-card">
+                    <div class="book-cover">
+                        {% if book.get_cover_image %}
+                            <img src="{{ book.get_cover_image }}" alt="{{ book.title }}">
+                        {% else %}
+                            📖 {{ book.title }}
+                        {% endif %}
+                    </div>
+                    <div class="book-info">
+                        <h3>{{ book.title }}</h3>
+                        <div class="book-author">by {{ book.author }}</div>
+                        <div class="book-rating">
+                            <div class="stars">
+                                {% for i in book.get_rating_stars.full %}★{% endfor %}
+                                {% if book.get_rating_stars.half %}☆{% endif %}
+                                {% for i in book.get_rating_stars.empty %}☆{% endfor %}
+                            </div>
+                            <span>({{ book.total_reviews }})</span>
+                        </div>
+                        <div class="book-price">
+                            {% if book.is_on_sale %}
+                                <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">${{ book.original_price }}</span>
+                            {% endif %}
+                            ${{ book.price }}
+                            {% if book.is_on_sale %}
+                                <span style="background: #e74c3c; color: white; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.8rem; margin-left: 0.5rem;">{{ book.get_discount_percentage }}% OFF</span>
+                            {% endif %}
+                        </div>
+                        <div class="book-actions">
+                            <a href="/books/book_list/" class="btn-small btn-cart">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div style="text-align: center;">
+                <a href="/books/book_list/" class="btn btn-primary">View All Books</a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Latest Books -->
+    {% if latest_books %}
+    <section class="section" style="background: #f8f9fa;">
+        <div class="container">
+            <h2 class="section-title">🆕 Latest Arrivals</h2>
+            <p class="section-subtitle">Fresh additions to our collection</p>
+            <div class="books-grid">
+                {% for book in latest_books %}
+                <div class="book-card">
+                    <div class="book-cover">
+                        {% if book.get_cover_image %}
+                            <img src="{{ book.get_cover_image }}" alt="{{ book.title }}">
+                        {% else %}
+                            📖 {{ book.title }}
+                        {% endif %}
+                    </div>
+                    <div class="book-info">
+                        <h3>{{ book.title }}</h3>
+                        <div class="book-author">by {{ book.author }}</div>
+                        <div class="book-price">${{ book.price }}</div>
+                        <div class="book-actions">
+                            <a href="/books/book_list/" class="btn-small btn-cart">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Categories -->
+    {% if categories %}
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">📚 Browse by Category</h2>
+            <div class="categories-grid">
+                {% for category in categories %}
+                <div class="category-card" onclick="window.location.href='/books/category_list/'">
+                    <div class="category-icon">📖</div>
+                    <h3>{{ category.category_name }}</h3>
+                    <p>{{ category.book_count }} books</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Online Bookstore. Made with ❤️ for book lovers everywhere.</p>
+        </div>
+    </footer>
+</body>
+</html>
